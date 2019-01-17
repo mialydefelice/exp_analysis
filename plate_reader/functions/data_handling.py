@@ -1,9 +1,12 @@
 import datetime
+import itertools
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import re
 import csv
+import seaborn as sns
 
 def find_data_path(filename, base_file_dir):
     """
@@ -57,6 +60,7 @@ def find_data_starts_breaks(data):
     """
     count = 0
     data_starts = []
+    data_breaks = []
     for line in data:
         if len(line) == 98 and line[0] == 'Time':
             data_starts.append(count)
@@ -145,7 +149,7 @@ def create_df_index(data_all_wavelengths):
     df_index.insert(1, 'temp')
     return df_index
 
-def create_df_all_wavelengths(data_all_wavelengths, wavelenths_used):
+def create_df_all_wavelengths(data_all_wavelengths, wavelengths_used):
     df_index = create_df_index(data_all_wavelengths)
     df = pd.DataFrame(index=df_index)
     for i in range(0, len(data_all_wavelengths)):
@@ -153,7 +157,7 @@ def create_df_all_wavelengths(data_all_wavelengths, wavelenths_used):
         df[wavelengths_used[i]] = transposed_list[0:]
     return df
 
-def parse_data_file(filename):
+def parse_data_file(filename, base_file_path):
     """
     Should be able to take in a file directly output from the
     Huang lab plate reader, and parse the data and return
