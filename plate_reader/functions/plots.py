@@ -1,10 +1,16 @@
+import matplotlib.pyplot as plt
+import os
+import pandas as pd
+import seaborn as sns
+%matplotlib inline
+
+from functions.data_handling import convert_timestamp
+
 def quick_plot_all_wells(df, fig_save_path):
     wavelengths_used = df.columns.values.tolist()
     for wavelength in wavelengths_used:
         fig, axs = plt.subplots(8, 12, sharex='col', sharey='row', figsize = (20, 10))
         sns.set_style('ticks')
-        #right now the axs are 2 dimensional, so need to flatten
-        #so i can iterate in a single dimension.
         axs = axs.flatten()
         fig.subplots_adjust(hspace = .2, wspace=.2)
         x = convert_timestamp(list(df[wavelength].iloc[0]))
