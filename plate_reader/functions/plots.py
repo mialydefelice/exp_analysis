@@ -15,11 +15,12 @@ def gather_data_to_plot(wells, df):
     error_to_plot = []
     legend = []
     for well in wells:
-        data_to_plot.append(df.loc[well, '600_averaged'])
-        error_to_plot.append(df.loc[well, '600_std'])
+        data_to_plot.append(df.loc[well, '600'])
+        #error_to_plot.append(df.loc[well, '600'])
         legend.append(df.loc[well, 'cell'])
-    return data_to_plot, error_to_plot, legend
-
+    #return data_to_plot, error_to_plot, legend
+    return data_to_plot, legend
+    
 def quick_plot_all_wells(df, fig_save_path, upper_bound):
     wavelengths_used = df.columns.values.tolist()
     for wavelength in wavelengths_used:
@@ -39,7 +40,8 @@ def quick_plot_all_wells(df, fig_save_path, upper_bound):
 
 def make_individual_plots(time, conditions, condition_names, df_merged, fig_save_path, y_max, xbounds, fig_name_header):
     for j in range(len(conditions)):
-        data_to_plot, error_to_plot, legendName = gather_data_to_plot(conditions[j][0], df_merged)
+        #data_to_plot, error_to_plot, legendName = gather_data_to_plot(conditions[j][0], df_merged)
+        data_to_plot, legendName = gather_data_to_plot(conditions[j][0], df_merged)
         f = plt.figure(figsize=(20,10))
         sns.set_style('ticks')
         plt.xlabel("Time (min)")
@@ -48,10 +50,10 @@ def make_individual_plots(time, conditions, condition_names, df_merged, fig_save
         color_palette = ['#e69f00','#56b4e9', '#009e73', '#f0e442', '#d55e00', '#cc79a7']
         c = 0
         for data in data_to_plot:
-            error = error_to_plot[c]
+            #error = error_to_plot[c]
             plt.semilogy(time, data,  color_palette[c], linewidth = 4, alpha = .8, label = legendName[c])
-            plt.fill_between(np.array(time), np.array(data)- np.array(error), 
-                             np.array(data) + np.array(error), alpha=0.15, facecolor = color_palette[c])
+            #plt.fill_between(np.array(time), np.array(data)- np.array(error), 
+                             #np.array(data) + np.array(error), alpha=0.15, facecolor = color_palette[c])
             plt.ylim([0,y_max])
             plt.xlim(xbounds)
             c += 1
