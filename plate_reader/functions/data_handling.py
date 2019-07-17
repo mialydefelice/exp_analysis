@@ -140,6 +140,8 @@ def get_list_of_data(data):
     """
     data_bounds = find_data_bounds(data)
     wavelengths_used = find_wavelengths(data, data_bounds[0])
+    print(data_bounds)
+    print(wavelengths_used)
     data_all_wavelengths = []
     for i in range(0, len(data_bounds[0])):
         data_all_wavelengths.append(data[data_bounds[0][i]: data_bounds[1][i]])
@@ -157,6 +159,8 @@ def create_df_all_wavelengths(data_all_wavelengths, wavelengths_used):
     for i in range(0, len(data_all_wavelengths)):
         transposed_list = list(zip(*data_all_wavelengths[i][1:]))
         for j in range(2,len(transposed_list)):
+            print(float(i))
+            print(transposed_list[j])
             transposed_list[j] = [float(i) for i in transposed_list[j]]
         df[wavelengths_used[i]] = transposed_list[0:]
     return df
